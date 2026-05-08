@@ -267,11 +267,35 @@ class RaggedCoreMetadata(CoreMetadata):
     swa_c4_ragged_indices: torch.Tensor
     swa_c128_ragged_indices: torch.Tensor
 
+    def copy_(self, other: "RaggedCoreMetadata") -> None:
+        copy_metadata(
+            src=other,
+            dst=self,
+            check_eq_fields=["swa_slice"],
+            copy_fields=[
+                "positions",
+                "swa_out_loc_sliced",
+                "c4_out_loc",
+                "c128_out_loc",
+                "swa_ragged_indices",
+                "swa_c4_ragged_indices",
+                "swa_c128_ragged_indices",
+            ],
+        )
+
 
 @dataclass
 class RaggedIndexerMetadata(IndexerMetadata):
     c4_k_start: torch.Tensor
     c4_k_finish: torch.Tensor
+
+    def copy_(self, other: "RaggedIndexerMetadata") -> None:
+        copy_metadata(
+            src=other,
+            dst=self,
+            check_eq_fields=[],
+            copy_fields=["c4_k_start", "c4_k_finish"],
+        )
 
 
 @dataclass
